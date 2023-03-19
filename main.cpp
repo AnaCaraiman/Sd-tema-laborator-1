@@ -51,55 +51,52 @@ void radixSort(int v[], int n) {
 }
 //merge:
 
-void merge(int arr[], int p, int q, int r) {
-
-    int n1 = q - p + 1;
-    int n2 = r - q;
-
-    int L[n1], M[n2];
-
-    for (int i = 0; i < n1; i++)
-        L[i] = arr[p + i];
-    for (int j = 0; j < n2; j++)
-        M[j] = arr[q + 1 + j];
-
+void mergeArrays(int v[], int left, int m, int right) {
     int i, j, k;
+    int nl = m - left + 1;
+    int nr = right - m;
+
+    int *L = new int[nl];
+    int *R = new int[nr];
+
+    for (i = 0; i < nl; i++)
+        L[i] = v[left + i];
+    for (j = 0; j < nr; j++)
+        R[j] = v[m + 1 + j];
+
     i = 0;
     j = 0;
-    k = p;
-
-    while (i < n1 && j < n2) {
-        if (L[i] <= M[j]) {
-            arr[k] = L[i];
+    k = left;
+    while (i < nl && j < nr) {
+        if (L[i] <= R[j]) {
+            v[k] = L[i];
             i++;
         } else {
-            arr[k] = M[j];
+            v[k] = R[j];
             j++;
         }
         k++;
     }
 
-    while (i < n1) {
-        arr[k] = L[i];
+    while (i < nl) {
+        v[k++] = L[i];
         i++;
-        k++;
     }
 
-    while (j < n2) {
-        arr[k] = M[j];
+    while (j < nr) {
+        v[k++] = R[j];
         j++;
-        k++;
     }
+    delete[] L;
+    delete[] R;
 }
 
-
-void mergeSort(int arr[], int l, int r) {
-    if (l < r) {
-        int m = l + (r - l) / 2;
-
-        mergeSort(arr, l, m);
-        mergeSort(arr, m + 1, r);
-        merge(arr, l, m, r);
+void mergeSort(int v[], int left, int right) {
+    if (left < right) {
+        int m = left + (right - left) / 2;
+        mergeSort(v, left, m);
+        mergeSort(v, m + 1, right);
+        mergeArrays(v, left, m, right);
     }
 }
 //shellsort:
